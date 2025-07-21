@@ -290,10 +290,13 @@ export default function UpdatesPage() {
       morph.style.transform = "scale(0)";
       setTimeout(() => {
         morph.innerHTML = `
-        <div class="bg-[#1a0000] p-6 sm:p-12
-        rounded-lg border-4 border-red-600
-        w-[90vw] max-w-sm sm:max-w-md md:max-w-4xl
-        relative shadow-[0_0_50px_#ff0000] overflow-hidden">
+        <div class="bg-[#1a0000]
+            p-4 rounded-lg border-2 border-red-600
+            w-[92vw] max-w-sm
+            sm:p-6 sm:max-w-md
+            md:p-12 md:max-w-4xl md:border-4
+            relative shadow-[0_0_50px_#ff0000] overflow-hidden
+            flex flex-col h-[55vh] sm:h-auto">
               <div class="cyber-grid"></div>
               <div class="cyber-scan"></div>
               <div class="cyber-particles"></div>
