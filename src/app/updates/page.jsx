@@ -240,18 +240,23 @@ export default function UpdatesPage() {
     const portal = document.createElement("div");
     portal.id = "dragonPortalRoot";
     portal.className = "fixed inset-0 z-[9999] bg-black flex items-center justify-center";
-    portal.innerHTML = `
-  <div id="morphStage" class="relative w-[90vw] max-w-4xl aspect-[16/9] flex items-center justify-center">
-    <i id="dragonCore" class="fas fa-dragon text-8xl text-red-500 absolute"></i>
-    ${[...Array(3)]
-        .map(
-          (_, i) =>
-            `<div class="magic-ring absolute rounded-full border-2 border-red-500/50"
-                 style="--delay:${i * 0.4}s; --size:${200 + i * 60}px;
-                        width:var(--size); height:var(--size);
-                        animation:spin 3s var(--delay) linear infinite;"></div>`
-        )
-        .join("")}
+    portal.innerHTML = /*html*/`
+  <div id="morphStage"
+       class="relative w-[95vw] max-w-4xl aspect-[16/9] flex items-center justify-center
+              sm:w-[90vw] sm:max-w-2xl md:max-w-3xl">
+
+    <!-- dragon icon -->
+    <i id="dragonCore"
+       class="fas fa-dragon text-6xl sm:text-7xl md:text-8xl text-red-500 absolute">
+    </i>
+
+    <!-- rings that scale down on small screens -->
+    ${[...Array(3)].map((_, i) => `
+        <div class="magic-ring absolute rounded-full border-2 border-red-500/50"
+             style="--delay:${i * 0.4}s; --size:${300 + i * 100}px;
+                    width:var(--size); height:var(--size);
+                    animation:spin 3s var(--delay) linear infinite;">
+        </div>`).join('')}
   </div>
 `;
 
@@ -264,8 +269,15 @@ export default function UpdatesPage() {
 
     const style = document.createElement("style");
     style.textContent = `
-  @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-`;
+      @keyframes spin{
+        from{transform:rotate(0deg);}
+        to{transform:rotate(360deg);}
+      }
+    
+      @media (max-width: 640px) {
+        .magic-ring { --size: calc(var(--size) * 0.85) !important; }
+      }
+    `;
     document.head.appendChild(style);
     document.body.appendChild(portal);
 
@@ -299,7 +311,7 @@ export default function UpdatesPage() {
   DARK REALM ACCESS
 </h3>
                 <p class="text-red-400 text-xl font-audiowide mb-8 cyber-subtext">
-                  ENTER THE FORBIDDEN GATEWAY
+                  Welcome To Forbidden Gateway
                 </p>
               </div>
   
@@ -309,20 +321,28 @@ export default function UpdatesPage() {
                   <input type="email" id="dragonEmail" placeholder="ENTER DEATH ID..." required
                          class="w-full bg-[#0f0000] text-red-600 border-2 border-red-600 rounded-lg py-4 px-6 focus:outline-none focus:ring-4 focus:ring-red-600 placeholder-red-900 text-2xl font-['Audiowide'] tracking-wider"/>
                 </div>
-  
+
                 <div class="relative">
                   <div class="cyber-input-border"></div>
                   <input type="password" id="dragonPassword" placeholder="SPEAK THE FORBIDDEN WORDS..." required
                          class="w-full bg-[#0f0000] text-red-600 border-2 border-red-600 rounded-lg py-4 px-6 focus:outline-none focus:ring-4 focus:ring-red-600 placeholder-red-900 text-2xl font-['Audiowide'] tracking-wider"/>
                 </div>
-  
+
                 <button type="submit"
-                        class="w-full bg-red-900 text-red-100 py-4 rounded-lg font-bold hover:bg-red-800 transition-all flex items-center justify-center text-2xl font-['Audiowide'] relative overflow-hidden cyber-button">
-                  <span class="relative z-10 flex items-center">
-                    <i class="fas fa-key mr-3"></i>
-                    ENTER IF YOU DARE
-                  </span>
-                </button>
+                class="w-full relative
+                       bg-[#1a0000] border-2 border-red-600
+                       rounded-none
+                       font-['Audiowide'] font-bold uppercase
+                       text-xl sm:text-2xl text-red-400 tracking-widest
+                       py-4 px-6
+                       transition-all duration-200
+                       hover:bg-red-900/30 hover:border-red-400 hover:text-red-200
+                       active:scale-[0.98] active:bg-red-800/40">
+          <span class="flex items-center justify-center">
+            <i class="fas fa-skull-crossbones mr-2"></i>
+            ENTER THE MORTAL GATE
+          </span>
+        </button>
               </form>
             </div>
           </div>
@@ -825,8 +845,8 @@ export default function UpdatesPage() {
                           }
                         }}
                         className={`transition ${isSuperAdmin
-                            ? "text-red-500 hover:text-red-400"
-                            : "text-gray-500 cursor-not-allowed"
+                          ? "text-red-500 hover:text-red-400"
+                          : "text-gray-500 cursor-not-allowed"
                           }`}
                         title="Delete"
                       >
