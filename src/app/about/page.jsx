@@ -24,7 +24,7 @@ export default function MainComponent() {
       name: "Aman Chandra",
       role: "Member",
       email: "aman@iitmparadox.org",
-      img: "/images/Aman.JPG",   
+      img: "/images/Aman.jpg",   
       line: "Thinks he's chill, but rage quits faster than a Netflix login. Lazy until obsession hits — then suddenly CEO energy."
     },
     {
