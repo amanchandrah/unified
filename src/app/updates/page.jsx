@@ -263,7 +263,7 @@ export default function UpdatesPage() {
     <!-- rings that scale down on small screens -->
     ${[...Array(3)].map((_, i) => `
         <div class="magic-ring absolute rounded-full border-2 border-red-500/50"
-             style="--delay:${i * 0.4}s; --size:${300 + i * 100}px;
+             style="--delay:${i * 0.4}s; --size:${240 + i * 100}px;
                     width:var(--size); height:var(--size);
                     animation:spin 3s var(--delay) linear infinite;">
         </div>`).join('')}
