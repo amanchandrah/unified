@@ -110,8 +110,7 @@ export default function UpdatesPage() {
     new Promise((res) => {
       const left = 3 - attempts;
       const div = document.createElement("div");
-      div.className =
-        "fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-[9999] font-horror";
+      div.className = "fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-[9999] font-creepster";
 
       if (left > 0) {
         // Show regular access denied with typing animation
@@ -274,7 +273,7 @@ export default function UpdatesPage() {
     /* ========  ADD ONLY THESE TWO LINES  ======== */
     const fontLink = document.createElement('link');
     fontLink.rel = 'stylesheet';
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Audiowide&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Creepster&display=swap';
     document.head.appendChild(fontLink);
     /* ============================================= */
 
@@ -1006,7 +1005,7 @@ export default function UpdatesPage() {
                           {h.changedBy}
                         </span>
                         {isCurrent && (
-                          <span className="font-horror bg-[#00ffc3]/20 px-3 py-1 rounded-full text-[#00ffc3] text-sm">
+                          <span className="font-creepster bg-[#00ffc3]/20 px-3 py-1 rounded-full text-[#00ffc3] text-sm">
                             CURRENT VERSION
                           </span>
                         )}
@@ -1084,7 +1083,7 @@ export default function UpdatesPage() {
         <button
           onClick={async () => {
             const overlay = document.createElement("div");
-            overlay.className = "logout-overlay";
+            overlay.className = "logout-overlay font-creepster";
             overlay.innerHTML = `
         <div class="logout-bg"></div>
         <div class="relative text-center">
