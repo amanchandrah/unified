@@ -12,12 +12,23 @@ if (!admin.apps.length) {
 export async function GET(request) {
   const authHeader = request.headers.get("authorization");
   const token = authHeader?.replace("Bearer ", "");
-  if (!token) return new Response(JSON.stringify({ admin: false }), { status: 401 });
+  if (!token) {
+    return new Response(JSON.stringify({ admin: false }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   try {
     const decoded = await getAuth().verifyIdToken(token);
-    return new Response(JSON.stringify({ admin: decoded.admin === true }));
+    return new Response(JSON.stringify({ admin: decoded.admin === true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch {
-    return new Response(JSON.stringify({ admin: false }), { status: 401 });
+    return new Response(JSON.stringify({ admin: false }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
