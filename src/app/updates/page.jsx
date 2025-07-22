@@ -19,6 +19,8 @@ import {
 } from "firebase/firestore";
 
 export default function UpdatesPage() {
+
+
   /* ---------- STATE ---------- */
   const [selectedDepartment, setSelectedDepartment] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,6 +29,10 @@ export default function UpdatesPage() {
   const [displayName, setDisplayName] = useState("");
   const loginAttemptsRef = React.useRef(0);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+
+
+
+
   const [adminLog, setAdminLog] = useState([]);
   const [lockoutTime, setLockoutTime] = useState(() => {
     // Only run in the browser
@@ -365,7 +371,7 @@ export default function UpdatesPage() {
         `;
         morph.style.transform = "scale(1)";
 
-        
+
 
         /* events */
         portal.querySelector("#portalBackBtn").onclick = () => {
@@ -622,81 +628,82 @@ export default function UpdatesPage() {
             </div>
 
             {/* Admin Controls */}
-           {/* MASTER ADMIN TABLE */}
-{isLoggedIn && isSuperAdmin && (
-  <>
-    <button
-      onClick={async () => {
-        const token = await auth.currentUser.getIdToken();
-        const res = await fetch("/api/admin-log", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        setAdminLog(data);
-      }}
-      className="bg-red-700 text-white px-6 py-3 rounded-lg hover:bg-red-600"
-    >
-      Admin Controls
-    </button>
+            {/* MASTER ADMIN TABLE */}
+            {isLoggedIn && isSuperAdmin && (
+              <>
+                <button
+                  onClick={async () => {
+                    const token = await auth.currentUser.getIdToken();
+                    const res = await fetch("/api/admin-log", {
+                      headers: { Authorization: `Bearer ${token}` },
+                    });
+                    if (!res.ok) { alert("Access denied"); return; }
+                    const data = await res.json();
+                    setAdminLog(data.logs);
+                    setAdminControlModal(true);
+                  }}
+                  className="bg-red-700 text-white px-6 py-3 rounded-lg hover:bg-red-600"
+                >
+                  Admin Controls (DEMO)
+                </button>
 
-    {/* MASTER TABLE MODAL */}
-    {adminLog.length > 0 && (
-      <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center p-2">
-        <div className="bg-[#0f0f1a] border border-[#00ffc3] rounded-xl w-full max-w-7xl max-h-[90vh] overflow-auto">
-          <div className="sticky top-0 bg-[#0f0f1a] p-4 flex justify-between">
-            <h2 className="text-xl text-[#00ffc3] font-audiowide">MASTER CHANGE LOG</h2>
-            <button
-              onClick={() => setAdminLog([])}
-              className="text-[#00ffc3] text-2xl"
-            >
-              <i className="fas fa-times" />
-            </button>
-          </div>
+                { }
+                {adminControlModal && (
+                  <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center p-2">
+                    <div className="bg-[#0f0f1a] border border-[#00ffc3] rounded-xl w-full max-w-7xl max-h-[90vh] overflow-auto">
+                      <div className="sticky top-0 bg-[#0f0f1a] p-4 flex justify-between">
+                        <h2 className="text-xl text-[#00ffc3] font-audiowide">MASTER CHANGE LOG</h2>
+                        <button
+                          onClick={() => setAdminControlModal(false)}
+                          className="text-[#00ffc3] text-2xl"
+                        >
+                          <i className="fas fa-times" />
+                        </button>
+                      </div>
 
-          {/* TABLE */}
-          <table className="min-w-full text-xs font-mono">
-            <thead className="sticky top-[60px] bg-[#0f0f1a]">
-              <tr className="text-[#00ffc3]">
-                <th className="p-2 border-b border-[#00ffc3]/30">Date & Time (seconds)</th>
-                <th className="p-2 border-b border-[#00ffc3]/30">Action</th>
-                <th className="p-2 border-b border-[#00ffc3]/30">User</th>
-                <th className="p-2 border-b border-[#00ffc3]/30">Message / Event</th>
-                <th className="p-2 border-b border-[#00ffc3]/30">Full Snapshot</th>
-              </tr>
-            </thead>
-            <tbody>
-              {adminLog.map((row, i) => (
-                <tr key={i} className="border-b border-[#00ffc3]/10 hover:bg-[#1a1b26]/30">
-                  <td className="p-2">
-                    {row.timestamp.toLocaleString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                    })}
-                  </td>
-                  <td className="p-2">{row.action}</td>
-                  <td className="p-2">{row.user}</td>
-                  <td className="p-2 max-w-xs truncate">{row.message}</td>
-                  <td className="p-2">
-                    <details className="cursor-pointer">
-                      <summary className="text-[#00ffc3]">Show</summary>
-                      <pre className="text-xs bg-[#0f0f1a] p-2 mt-1 overflow-auto max-h-32">
-                        {row.snapshot}
-                      </pre>
-                    </details>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    )}
-  </>
-)}
+                      <table className="min-w-full text-xs font-mono">
+                        <thead className="sticky top-[60px] bg-[#0f0f1a]">
+                          <tr className="text-[#00ffc3]">
+                            <th className="p-2 border-b">Date & Time (seconds)</th>
+                            <th className="p-2 border-b">Action</th>
+                            <th className="p-2 border-b">User</th>
+                            <th className="p-2 border-b">Message / Event</th>
+                            <th className="p-2 border-b">Full Snapshot</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {adminLog.map((row, i) => (
+                            <tr key={i} className="border-b border-[#00ffc3]/10 hover:bg-[#1a1b26]/30">
+                              <td className="p-2">
+                                {new Date(row.timestamp).toLocaleString("en-GB", {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  second: "2-digit",
+                                })}
+                              </td>
+                              <td className="p-2">{row.action}</td>
+                              <td className="p-2">{row.user}</td>
+                              <td className="p-2 max-w-xs truncate">{row.message}</td>
+                              <td className="p-2">
+                                <details>
+                                  <summary className="text-[#00ffc3]">Show</summary>
+                                  <pre className="text-xs bg-[#0f0f1a] p-2 mt-1 overflow-auto max-h-32">
+                                    {row.snapshot}
+                                  </pre>
+                                </details>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
 
             {/* ADD / EDIT FORM */}
             {showAdminForm && (
@@ -939,138 +946,138 @@ export default function UpdatesPage() {
       </main>
 
       {/* HISTORY MODAL */}
-     {historyModal.length > 0 && (
-  <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-    {/* Darkened overlay */}
-    <div className="absolute inset-0 bg-black/80 backdrop-blur-lg">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,195,0.1)_0%,transparent_70%)] opacity-30"></div>
-    </div>
-    
-    {/* Main container */}
-    <div className="relative bg-gradient-to-br from-[#0f0f1a] to-[#0a1a1f] border-2 border-[#00ffc3]/50 rounded-xl w-full max-w-4xl max-h-[90vh] min-h-[300px] overflow-hidden shadow-[0_0_40px_#00ffc3/30]">
-      {/* Glowing top bar */}
-      <div className="bg-[#00ffc3]/10 border-b border-[#00ffc3]/30 p-4 flex justify-between items-center">
-        <h2 className="font-orbitron text-2xl text-[#00ffc3] tracking-widest flex items-center gap-2">
-          <i className="fas fa-history text-[#00ffc3]"></i>
-          UPDATE CHRONOLOGY
-        </h2>
-        <button 
-          onClick={() => setHistoryModal([])} 
-          className="text-[#ff5555] hover:text-[#ff0000] text-2xl transition-all duration-300"
-        >
-          <i className="fas fa-times-circle"></i>
-        </button>
-      </div>
-      
-      {/* Timeline content */}
-      <div className="overflow-y-auto h-full p-6 custom-scrollbar" style={{ maxHeight: 'calc(90vh - 72px)' }}>
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-[#00ffc3]/30"></div>
-          
-          {historyModal.map((h, idx) => {
-            const data = h.snapshot || h.old || {};
-            const isCurrent = idx === 0; // First item is now current
-            
-            return (
-              <div key={idx} className="relative pl-12 pb-8 group">
-                {/* Enhanced timeline dot */}
-                <div className="absolute left-0 flex flex-col items-center" style={{ height: 'calc(100% - 28px)' }}>
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${isCurrent ? "bg-[#00ffc3] ring-4 ring-[#00ffc3]/30 animate-pulse" : "bg-[#00ffc3]/70"} z-10`}>
-                    {!isCurrent && <div className="w-2 h-2 bg-[#0a1a1f] rounded-full"></div>}
-                  </div>
-                  {idx !== historyModal.length - 1 && (
-                    <div className="flex-1 w-0.5 bg-[#00ffc3]/50 mt-1"></div>
-                  )}
-                </div>
-                
-                {/* Header */}
-                <div className={`flex flex-wrap items-center gap-3 mb-2 ${isCurrent ? "text-[#00ffc3]" : "text-[#00ffc3]/80"}`}>
-                  <span className="font-orbitron text-lg tracking-wider">
-                    {new Date(h.changedAt?.toDate ? h.changedAt.toDate() : h.changedAt).toLocaleString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                  <span className="font-audiowide bg-[#00ffc3]/10 px-3 py-1 rounded-full text-sm">
-                    {h.changedBy}
-                  </span>
-                  {isCurrent && (
-                    <span className="font-horror bg-[#00ffc3]/20 px-3 py-1 rounded-full text-[#00ffc3] text-sm">
-                      CURRENT VERSION
-                    </span>
-                  )}
-                </div>
-                
-                {/* Content - FULLY INTACT MESSAGE DISPLAY */}
-                <div className="bg-[#0a1215]/80 border border-[#00ffc3]/20 rounded-lg p-5 backdrop-blur-sm">
-                  {data.type === "general" && (
-                    <div>
-                      <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">GENERAL UPDATE</h3>
-                      <p className="text-[#a9adc1] font-sans text-lg">{data.message}</p>
-                    </div>
-                  )}
-                  
-                  {data.type === "guest" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">GUEST DETAILS</h3>
-                        <div className="space-y-2">
-                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Event:</span> {data.eventName}</p>
-                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Guest:</span> {data.guestName}</p>
-                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Status:</span> {data.status}</p>
+      {historyModal.length > 0 && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          {/* Darkened overlay */}
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-lg">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,195,0.1)_0%,transparent_70%)] opacity-30"></div>
+          </div>
+
+          {/* Main container */}
+          <div className="relative bg-gradient-to-br from-[#0f0f1a] to-[#0a1a1f] border-2 border-[#00ffc3]/50 rounded-xl w-full max-w-4xl max-h-[90vh] min-h-[300px] overflow-hidden shadow-[0_0_40px_#00ffc3/30]">
+            {/* Glowing top bar */}
+            <div className="bg-[#00ffc3]/10 border-b border-[#00ffc3]/30 p-4 flex justify-between items-center">
+              <h2 className="font-orbitron text-2xl text-[#00ffc3] tracking-widest flex items-center gap-2">
+                <i className="fas fa-history text-[#00ffc3]"></i>
+                UPDATE CHRONOLOGY
+              </h2>
+              <button
+                onClick={() => setHistoryModal([])}
+                className="text-[#ff5555] hover:text-[#ff0000] text-2xl transition-all duration-300"
+              >
+                <i className="fas fa-times-circle"></i>
+              </button>
+            </div>
+
+            {/* Timeline content */}
+            <div className="overflow-y-auto h-full p-6 custom-scrollbar" style={{ maxHeight: 'calc(90vh - 72px)' }}>
+              <div className="relative">
+                {/* Vertical line */}
+                <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-[#00ffc3]/30"></div>
+
+                {historyModal.map((h, idx) => {
+                  const data = h.snapshot || h.old || {};
+                  const isCurrent = idx === 0; // First item is now current
+
+                  return (
+                    <div key={idx} className="relative pl-12 pb-8 group">
+                      {/* Enhanced timeline dot */}
+                      <div className="absolute left-0 flex flex-col items-center" style={{ height: 'calc(100% - 28px)' }}>
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center ${isCurrent ? "bg-[#00ffc3] ring-4 ring-[#00ffc3]/30 animate-pulse" : "bg-[#00ffc3]/70"} z-10`}>
+                          {!isCurrent && <div className="w-2 h-2 bg-[#0a1a1f] rounded-full"></div>}
                         </div>
+                        {idx !== historyModal.length - 1 && (
+                          <div className="flex-1 w-0.5 bg-[#00ffc3]/50 mt-1"></div>
+                        )}
                       </div>
-                      <div>
-                        <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">MESSAGE</h3>
-                        <p className="text-[#a9adc1] font-sans">{data.message}</p>
+
+                      {/* Header */}
+                      <div className={`flex flex-wrap items-center gap-3 mb-2 ${isCurrent ? "text-[#00ffc3]" : "text-[#00ffc3]/80"}`}>
+                        <span className="font-orbitron text-lg tracking-wider">
+                          {new Date(h.changedAt?.toDate ? h.changedAt.toDate() : h.changedAt).toLocaleString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                        <span className="font-audiowide bg-[#00ffc3]/10 px-3 py-1 rounded-full text-sm">
+                          {h.changedBy}
+                        </span>
+                        {isCurrent && (
+                          <span className="font-horror bg-[#00ffc3]/20 px-3 py-1 rounded-full text-[#00ffc3] text-sm">
+                            CURRENT VERSION
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Content - FULLY INTACT MESSAGE DISPLAY */}
+                      <div className="bg-[#0a1215]/80 border border-[#00ffc3]/20 rounded-lg p-5 backdrop-blur-sm">
+                        {data.type === "general" && (
+                          <div>
+                            <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">GENERAL UPDATE</h3>
+                            <p className="text-[#a9adc1] font-sans text-lg">{data.message}</p>
+                          </div>
+                        )}
+
+                        {data.type === "guest" && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">GUEST DETAILS</h3>
+                              <div className="space-y-2">
+                                <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Event:</span> {data.eventName}</p>
+                                <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Guest:</span> {data.guestName}</p>
+                                <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Status:</span> {data.status}</p>
+                              </div>
+                            </div>
+                            <div>
+                              <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">MESSAGE</h3>
+                              <p className="text-[#a9adc1] font-sans">{data.message}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {data.type === "event" && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">EVENT DETAILS</h3>
+                              <div className="space-y-2">
+                                <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Name:</span> {data.eventName}</p>
+                                <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Department:</span> {data.department}</p>
+                              </div>
+                            </div>
+                            <div>
+                              <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">MESSAGE</h3>
+                              <p className="text-[#a9adc1] font-sans">{data.message}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {data.type === "department" && (
+                          <div>
+                            <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">DEPARTMENT UPDATE</h3>
+                            <div className="space-y-3">
+                              <p className="text-[#a9adc1]">
+                                <span className="text-[#00ffc3]/70">Department:</span>{" "}
+                                {data.department === "Others" ? data.customDepartment || "Others" : data.department}
+                              </p>
+                              <div>
+                                <h4 className="font-audiowide text-[#00ffc3]/80 mb-1">MESSAGE</h4>
+                                <p className="text-[#a9adc1] font-sans">{data.message}</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
-                  )}
-                  
-                  {data.type === "event" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">EVENT DETAILS</h3>
-                        <div className="space-y-2">
-                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Name:</span> {data.eventName}</p>
-                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Department:</span> {data.department}</p>
-                        </div>
-                      </div>
-                      <div>
-                        <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">MESSAGE</h3>
-                        <p className="text-[#a9adc1] font-sans">{data.message}</p>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {data.type === "department" && (
-                    <div>
-                      <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">DEPARTMENT UPDATE</h3>
-                      <div className="space-y-3">
-                        <p className="text-[#a9adc1]">
-                          <span className="text-[#00ffc3]/70">Department:</span>{" "}
-                          {data.department === "Others" ? data.customDepartment || "Others" : data.department}
-                        </p>
-                        <div>
-                          <h4 className="font-audiowide text-[#00ffc3]/80 mb-1">MESSAGE</h4>
-                          <p className="text-[#a9adc1] font-sans">{data.message}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-)}
+      )}
 
       {/* LOGOUT BUTTON */}
       {isLoggedIn && (
