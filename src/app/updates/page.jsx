@@ -938,9 +938,9 @@ export default function UpdatesPage() {
                     {h.changedBy}
                   </span>
                   {isCurrent && (
-                    <span className="font-horror bg-[#00ffc3]/20 px-3 py-1 rounded-full text-[#00ffc3] text-sm">
-                      CURRENT VERSION
-                    </span>
+                    <span className="font-['Audiowide'] bg-[#00ffc3]/20 px-3 py-1 rounded-full text-[#00ffc3] text-sm">
+                    CURRENT VERSION
+                  </span>
                   )}
                 </div>
                 
