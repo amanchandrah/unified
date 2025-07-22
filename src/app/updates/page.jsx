@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from "react";
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "@/utilities/firebase";
+
 import {
   collection,
   onSnapshot,
@@ -26,6 +27,7 @@ export default function UpdatesPage() {
   const [displayName, setDisplayName] = useState("");
   const loginAttemptsRef = React.useRef(0);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [adminLog, setAdminLog] = useState([]);
   const [lockoutTime, setLockoutTime] = useState(() => {
     // Only run in the browser
     if (typeof window === "undefined") return null;
@@ -620,22 +622,81 @@ export default function UpdatesPage() {
             </div>
 
             {/* Admin Controls */}
+           {/* MASTER ADMIN TABLE */}
+{isLoggedIn && isSuperAdmin && (
+  <>
+    <button
+      onClick={async () => {
+        const token = await auth.currentUser.getIdToken();
+        const res = await fetch("/api/admin-log", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setAdminLog(data);
+      }}
+      className="bg-red-700 text-white px-6 py-3 rounded-lg hover:bg-red-600"
+    >
+      Admin Controls
+    </button>
+
+    {/* MASTER TABLE MODAL */}
+    {adminLog.length > 0 && (
+      <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center p-2">
+        <div className="bg-[#0f0f1a] border border-[#00ffc3] rounded-xl w-full max-w-7xl max-h-[90vh] overflow-auto">
+          <div className="sticky top-0 bg-[#0f0f1a] p-4 flex justify-between">
+            <h2 className="text-xl text-[#00ffc3] font-audiowide">MASTER CHANGE LOG</h2>
             <button
-              onClick={() => {
-                if (isSuperAdmin) {
-                  setAdminControlModal(true);
-                } else {
-                  alert("You do not have permission to view this.");
-                }
-              }}
-              className={`px-6 py-3 rounded-lg transition ${isSuperAdmin
-                ? "bg-red-700 text-white hover:bg-red-600"
-                : "bg-gray-600 text-gray-400 cursor-not-allowed"
-                }`}
-              title={isSuperAdmin ? "Open full change log" : "Super-admin only"}
+              onClick={() => setAdminLog([])}
+              className="text-[#00ffc3] text-2xl"
             >
-              Admin Controls
+              <i className="fas fa-times" />
             </button>
+          </div>
+
+          {/* TABLE */}
+          <table className="min-w-full text-xs font-mono">
+            <thead className="sticky top-[60px] bg-[#0f0f1a]">
+              <tr className="text-[#00ffc3]">
+                <th className="p-2 border-b border-[#00ffc3]/30">Date & Time (seconds)</th>
+                <th className="p-2 border-b border-[#00ffc3]/30">Action</th>
+                <th className="p-2 border-b border-[#00ffc3]/30">User</th>
+                <th className="p-2 border-b border-[#00ffc3]/30">Message / Event</th>
+                <th className="p-2 border-b border-[#00ffc3]/30">Full Snapshot</th>
+              </tr>
+            </thead>
+            <tbody>
+              {adminLog.map((row, i) => (
+                <tr key={i} className="border-b border-[#00ffc3]/10 hover:bg-[#1a1b26]/30">
+                  <td className="p-2">
+                    {row.timestamp.toLocaleString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                    })}
+                  </td>
+                  <td className="p-2">{row.action}</td>
+                  <td className="p-2">{row.user}</td>
+                  <td className="p-2 max-w-xs truncate">{row.message}</td>
+                  <td className="p-2">
+                    <details className="cursor-pointer">
+                      <summary className="text-[#00ffc3]">Show</summary>
+                      <pre className="text-xs bg-[#0f0f1a] p-2 mt-1 overflow-auto max-h-32">
+                        {row.snapshot}
+                      </pre>
+                    </details>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )}
+  </>
+)}
 
             {/* ADD / EDIT FORM */}
             {showAdminForm && (
@@ -878,7 +939,7 @@ export default function UpdatesPage() {
       </main>
 
       {/* HISTORY MODAL */}
-      {historyModal.length > 0 && (
+     {historyModal.length > 0 && (
   <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
     {/* Darkened overlay */}
     <div className="absolute inset-0 bg-black/80 backdrop-blur-lg">
@@ -938,9 +999,9 @@ export default function UpdatesPage() {
                     {h.changedBy}
                   </span>
                   {isCurrent && (
-                    <span className="font-['Audiowide'] bg-[#00ffc3]/20 px-3 py-1 rounded-full text-[#00ffc3] text-sm">
-                    CURRENT VERSION
-                  </span>
+                    <span className="font-horror bg-[#00ffc3]/20 px-3 py-1 rounded-full text-[#00ffc3] text-sm">
+                      CURRENT VERSION
+                    </span>
                   )}
                 </div>
                 
