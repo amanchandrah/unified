@@ -273,6 +273,12 @@ export default function UpdatesPage() {
     const style = document.createElement("style");
     style.textContent = `
       @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+      @keyframes bg-grid-red {
+        0% { background-position: 0 0; }
+        100% { background-position: 50px 50px; }
+      }
+      
       
       /* ---------- mobile mini styles ---------- */
       @media (max-width: 640px) {
@@ -873,194 +879,137 @@ export default function UpdatesPage() {
 
       {/* HISTORY MODAL */}
       {historyModal.length > 0 && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#0f0f1a]/40 backdrop-blur-sm" />
-          <div className="relative bg-[#1a1b26]/80 backdrop-blur-lg border border-[#00ffc3] rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl text-[#00ffc3]">History</h2>
-              <button onClick={() => setHistoryModal([])} className="text-red-500">
-                <i className="fas fa-times" />
-              </button>
-            </div>
-            <div className="space-y-4 text-sm font-sans">
-              {[...historyModal].reverse().map((h, idx, arr) => {
-                const data = h.snapshot || h.old || {};
-                const isCurrent = idx === arr.length - 1;
-                return (
-                  <div
-                    key={idx}
-                    className={`border-l-2 pl-3 ${isCurrent ? "border-green-400" : "border-[#00ffc3]"
-                      }`}
-                  >
-                    <p className={`${isCurrent ? "text-green-400" : "text-[#00ffc3]"}`}>
-                      {new Date(
-                        h.changedAt?.toDate ? h.changedAt.toDate() : h.changedAt
-                      ).toLocaleString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}{" "}
-                      – {h.changedBy}
-                      {isCurrent && <span className="ml-2 font-bold">(Current)</span>}
-                    </p>
-                    {data.type === "general" && (
-                      <p className="text-[#a9adc1] mt-1 break-words">{data.message}</p>
-                    )}
-                    {data.type === "guest" && (
-                      <div className="text-[#a9adc1] mt-1 space-y-1">
-                        <p>Event: {data.eventName}</p>
-                        <p>Guest: {data.guestName}</p>
-                        <p>Status: {data.status}</p>
-                        <p>Message: {data.message}</p>
-                      </div>
-                    )}
-                    {data.type === "event" && (
-                      <div className="text-[#a9adc1] mt-1 space-y-1">
-                        <p>Event: {data.eventName}</p>
-                        <p>Department: {data.department}</p>
-                        <p>Message: {data.message}</p>
-                      </div>
-                    )}
-                    {data.type === "department" && (
-                      <div className="text-[#a9adc1] mt-1 space-y-1">
-                        <p>
-                          Department:{" "}
-                          {data.department === "Others"
-                            ? data.customDepartment || "Others"
-                            : data.department}
-                        </p>
-                        <p>Message: {data.message}</p>
-                      </div>
-                    )}
+  <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+    {/* Darkened overlay */}
+    <div className="absolute inset-0 bg-black/80 backdrop-blur-lg">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,195,0.1)_0%,transparent_70%)] opacity-30"></div>
+    </div>
+    
+    {/* Main container */}
+    <div className="relative bg-gradient-to-br from-[#0f0f1a] to-[#0a1a1f] border-2 border-[#00ffc3]/50 rounded-xl w-full max-w-4xl max-h-[90vh] min-h-[300px] overflow-hidden shadow-[0_0_40px_#00ffc3/30]">
+      {/* Glowing top bar */}
+      <div className="bg-[#00ffc3]/10 border-b border-[#00ffc3]/30 p-4 flex justify-between items-center">
+        <h2 className="font-orbitron text-2xl text-[#00ffc3] tracking-widest flex items-center gap-2">
+          <i className="fas fa-history text-[#00ffc3]"></i>
+          UPDATE CHRONOLOGY
+        </h2>
+        <button 
+          onClick={() => setHistoryModal([])} 
+          className="text-[#ff5555] hover:text-[#ff0000] text-2xl transition-all duration-300"
+        >
+          <i className="fas fa-times-circle"></i>
+        </button>
+      </div>
+      
+      {/* Timeline content */}
+      <div className="overflow-y-auto h-full p-6 custom-scrollbar" style={{ maxHeight: 'calc(90vh - 72px)' }}>
+        <div className="relative">
+          {/* Vertical line */}
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-[#00ffc3]/30"></div>
+          
+          {historyModal.map((h, idx) => {
+            const data = h.snapshot || h.old || {};
+            const isCurrent = idx === 0; // First item is now current
+            
+            return (
+              <div key={idx} className="relative pl-12 pb-8 group">
+                {/* Enhanced timeline dot */}
+                <div className="absolute left-0 flex flex-col items-center" style={{ height: 'calc(100% - 28px)' }}>
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${isCurrent ? "bg-[#00ffc3] ring-4 ring-[#00ffc3]/30 animate-pulse" : "bg-[#00ffc3]/70"} z-10`}>
+                    {!isCurrent && <div className="w-2 h-2 bg-[#0a1a1f] rounded-full"></div>}
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                  {idx !== historyModal.length - 1 && (
+                    <div className="flex-1 w-0.5 bg-[#00ffc3]/50 mt-1"></div>
+                  )}
+                </div>
+                
+                {/* Header */}
+                <div className={`flex flex-wrap items-center gap-3 mb-2 ${isCurrent ? "text-[#00ffc3]" : "text-[#00ffc3]/80"}`}>
+                  <span className="font-orbitron text-lg tracking-wider">
+                    {new Date(h.changedAt?.toDate ? h.changedAt.toDate() : h.changedAt).toLocaleString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                  <span className="font-audiowide bg-[#00ffc3]/10 px-3 py-1 rounded-full text-sm">
+                    {h.changedBy}
+                  </span>
+                  {isCurrent && (
+                    <span className="font-horror bg-[#00ffc3]/20 px-3 py-1 rounded-full text-[#00ffc3] text-sm">
+                      CURRENT VERSION
+                    </span>
+                  )}
+                </div>
+                
+                {/* Content - FULLY INTACT MESSAGE DISPLAY */}
+                <div className="bg-[#0a1215]/80 border border-[#00ffc3]/20 rounded-lg p-5 backdrop-blur-sm">
+                  {data.type === "general" && (
+                    <div>
+                      <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">GENERAL UPDATE</h3>
+                      <p className="text-[#a9adc1] font-sans text-lg">{data.message}</p>
+                    </div>
+                  )}
+                  
+                  {data.type === "guest" && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">GUEST DETAILS</h3>
+                        <div className="space-y-2">
+                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Event:</span> {data.eventName}</p>
+                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Guest:</span> {data.guestName}</p>
+                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Status:</span> {data.status}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">MESSAGE</h3>
+                        <p className="text-[#a9adc1] font-sans">{data.message}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {data.type === "event" && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">EVENT DETAILS</h3>
+                        <div className="space-y-2">
+                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Name:</span> {data.eventName}</p>
+                          <p className="text-[#a9adc1]"><span className="text-[#00ffc3]/70">Department:</span> {data.department}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">MESSAGE</h3>
+                        <p className="text-[#a9adc1] font-sans">{data.message}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {data.type === "department" && (
+                    <div>
+                      <h3 className="font-audiowide text-[#00ffc3]/80 mb-2">DEPARTMENT UPDATE</h3>
+                      <div className="space-y-3">
+                        <p className="text-[#a9adc1]">
+                          <span className="text-[#00ffc3]/70">Department:</span>{" "}
+                          {data.department === "Others" ? data.customDepartment || "Others" : data.department}
+                        </p>
+                        <div>
+                          <h4 className="font-audiowide text-[#00ffc3]/80 mb-1">MESSAGE</h4>
+                          <p className="text-[#a9adc1] font-sans">{data.message}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
-      )}
-
-      {/* ADMIN CONTROLS – PICK UPDATE */}
-      {adminControlModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#0f0f1a]/60 backdrop-blur-sm" />
-          <div className="relative bg-[#0f0f1a] border border-[#00ffc3] rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl text-[#00ffc3]">Admin Controls – Select Update</h2>
-              <button
-                onClick={() => setAdminControlModal(false)}
-                className="text-red-500 text-xl"
-              >
-                <i className="fas fa-times" />
-              </button>
-            </div>
-            <div className="space-y-4">
-              {updates.map((u) => (
-                <button
-                  key={u.id}
-                  onClick={() => {
-                    setSingleUpdateDetail(u);
-                    setAdminControlModal(false);
-                  }}
-                  className="w-full text-left bg-[#1a1b26] border border-[#00ffc3] rounded-lg p-4 hover:bg-[#00ffc3]/10 transition"
-                >
-                  <p className="font-bold text-[#00ffc3]">
-                    {u.eventName || u.department || "Department Update"}
-                  </p>
-                  <p className="text-xs font-mono text-[#a9adc1]">
-                    {u.type} – {u.department}
-                  </p>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* DETAILED PER-UPDATE TIMELINE */}
-      {singleUpdateDetail && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#0f0f1a]/60 backdrop-blur-sm" />
-          <div className="relative bg-[#0f0f1a] border border-[#00ffc3] rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl text-[#00ffc3]">Detailed Timeline</h2>
-              <button
-                onClick={() => setSingleUpdateDetail(null)}
-                className="text-red-500 text-xl"
-              >
-                <i className="fas fa-times" />
-              </button>
-            </div>
-            <div className="overflow-x-auto text-sm font-sans">
-              <table className="w-full">
-                <thead className="border-b border-[#00ffc3]">
-                  <tr>
-                    <th className="py-2 px-4 text-left">#</th>
-                    <th className="py-2 px-4 text-left">Who</th>
-                    <th className="py-2 px-4 text-left">What they wrote</th>
-                    <th className="py-2 px-4 text-left">When</th>
-                    <th className="py-2 px-4 text-left">Meaning</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(singleUpdateDetail.history || []).map((h, idx, arr) => {
-                    const data = h.snapshot || {};
-                    const isCurrent = idx === 0; // newest first
-                    let what = "";
-                    switch (data.type) {
-                      case "general":
-                        what = data.message;
-                        break;
-                      case "guest":
-                        what = `Event: ${data.eventName}, Guest: ${data.guestName}, Status: ${data.status}, Msg: ${data.message}`;
-                        break;
-                      case "event":
-                        what = `Event: ${data.eventName}, Dept: ${data.department}, Msg: ${data.message}`;
-                        break;
-                      case "department":
-                        const dept =
-                          data.department === "Others"
-                            ? data.customDepartment || "Others"
-                            : data.department;
-                        what = `Dept: ${dept}, Msg: ${data.message}`;
-                        break;
-                      default:
-                        what = data.message || "-";
-                    }
-                    return (
-                      <tr
-                        key={idx}
-                        className={`border-b border-[#00ffc3]/20 ${isCurrent ? "bg-green-900/30" : ""
-                          }`}
-                      >
-                        <td className="py-2 px-4">{idx + 1}</td>
-                        <td className="py-2 px-4">{h.changedBy}</td>
-                        <td className="py-2 px-4 max-w-md break-words font-sans text-[#a9adc1]">
-                          {what}
-                        </td>
-                        <td className="py-2 px-4 font-mono">
-                          {new Date(
-                            h.changedAt?.toDate ? h.changedAt.toDate() : h.changedAt
-                          ).toLocaleString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </td>
-                        <td className="py-2 px-4">{isCurrent ? "Current" : "Edited"}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
+    </div>
+  </div>
+)}
 
       {/* LOGOUT BUTTON */}
       {isLoggedIn && (
