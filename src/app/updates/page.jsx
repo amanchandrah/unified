@@ -222,6 +222,9 @@ export default function UpdatesPage() {
   /* ---------- DRAGON LOGIN ---------- */
   /* ---------- DRAGON LOGIN (patch) ---------- */
   const openDragonLogin = () => {
+
+    let loginMinimized = false;   // true = compact bar
+    let loginVisible = true;    // false = closed
     /* ---------- lockout check (unchanged) ---------- */
     const savedLockout = localStorage.getItem('lockoutTime');
     if (savedLockout && Date.now() < parseInt(savedLockout)) {
@@ -269,17 +272,20 @@ export default function UpdatesPage() {
 
     const style = document.createElement("style");
     style.textContent = `
-      @keyframes spin{
-        from{transform:rotate(0deg);}
-        to{transform:rotate(360deg);}
-      }
-    
+      @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+      
+      /* ---------- mobile mini styles ---------- */
       @media (max-width: 640px) {
-        .magic-ring { --size: calc(var(--size) * 0.85) !important; }
+        .cyber-grid,.cyber-scan,.cyber-particles,.cyber-input-border{display:none!important}
+        .fa-dragon{font-size:3rem!important}
+        .cyber-text,.cyber-subtext{font-size:1.25rem!important}
+        #dragonEmail,#dragonPassword,.cyber-button{font-size:1rem!important;padding-top:.5rem!important;padding-bottom:.5rem!important}
       }
     `;
     document.head.appendChild(style);
     document.body.appendChild(portal);
+
+
 
 
 
@@ -290,17 +296,15 @@ export default function UpdatesPage() {
       morph.style.transform = "scale(0)";
       setTimeout(() => {
         morph.innerHTML = `
-        <div class="bg-[#1a0000]
-            p-4 rounded-lg border-2 border-red-600
-            w-[92vw] max-w-sm
-            sm:p-6 sm:max-w-md
-            md:p-12 md:max-w-4xl md:border-4
-            relative shadow-[0_0_50px_#ff0000] overflow-hidden
-            flex flex-col h-[55vh] sm:h-auto">
-              <div class="cyber-grid"></div>
-              <div class="cyber-scan"></div>
-              <div class="cyber-particles"></div>
-            </div>
+        <div class="bg-[#1a0000] p-2 rounded-lg border-2 border-red-600
+           w-[92vw] max-w-[280px] mx-auto
+           max-h-[60vh] overflow-y-auto
+           sm:p-4 sm:max-w-sm sm:max-h-[75vh]
+           md:p-12 md:max-w-4xl md:max-h-none md:border-4
+           relative shadow-[0_0_50px_#ff0000]">
+
+
+
   
             <!-- close -->
             <button id="portalBackBtn" class="absolute top-6 right-6 text-red-600 hover:text-red-400 cursor-pointer z-20 text-2xl transform hover:rotate-90 transition-transform duration-300">
@@ -352,6 +356,8 @@ export default function UpdatesPage() {
           </div>
         `;
         morph.style.transform = "scale(1)";
+
+        
 
         /* events */
         portal.querySelector("#portalBackBtn").onclick = () => {
