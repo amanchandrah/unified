@@ -12,11 +12,18 @@ if (!admin.apps.length) {
 export async function GET(request) {
   const authHeader = request.headers.get("authorization");
   const token = authHeader?.replace("Bearer ", "");
-  if (!token) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+  if (!token) {
+    console.log('No token provided');
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+  }
 
   try {
     const decoded = await getAuth().verifyIdToken(token);
-    if (!decoded.admin)return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403 });
+    console.log('Decoded token:', decoded); // Log the decoded token
+    if (!decoded.admin) {
+      console.log('User is not an admin');
+      return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403 });
+    }
 
     const db = admin.firestore();
     const snap = await db.collection("updates").orderBy("createdAt", "desc").get();
@@ -52,8 +59,8 @@ export async function GET(request) {
     });
 
     return new Response(JSON.stringify(rows));
-  } catch {
+  } catch (error) {
+    console.error('Error verifying token:', error); // Log any errors
     return new Response(JSON.stringify([]), { status: 401 });
   }
 }
-
