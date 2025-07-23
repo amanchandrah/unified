@@ -169,35 +169,89 @@ export default function MainComponent() {
 
         {/* TEAM */}
         <section className="my-16">
-          <h2 className="text-3xl font-bold text-[#00ffc3] text-center mb-12">Meet the Wizards behind the magic</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-            {team.map(m => (
-              <div key={m.name} className="group relative">
-                <div className="bg-[#1a1b26] p-4 rounded-lg cursor-pointer hover:bg-[#252632] transition-all border border-transparent hover:border-[#00ffc3] transform hover:-translate-y-2">
-                  <div className="w-16 h-16 bg-[#0f0f1a] rounded-full flex items-center justify-center border-2 border-[#00ffc3] group-hover:scale-110 overflow-hidden">
-                    <img src={m.img} alt={m.name} className="w-full h-full object-cover" />
-                  </div>
-                  <span className="text-[#00ffc3] font-bold truncate w-full block mt-2">{m.name}</span>
-                  <span className="text-[#a9adc1] text-sm">{m.role}</span>
-                </div>
-                <div className="absolute z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 bg-gradient-to-br from-[#1a1b26] to-[#252632] p-6 rounded-lg shadow-[0_0_30px_rgba(0,255,195,0.3)] border-2 border-[#00ffc3]">
-                  <img src={m.img} alt={m.name} className="w-24 h-24 mx-auto rounded-full mb-4 border-2 border-[#00ffc3]" />
-                  <h4 className="text-[#00ffc3] text-xl font-bold mb-2">{m.name}</h4>
-                  <p className="text-[#a9adc1] text-sm mb-2 flex items-center justify-center"><i className="fas fa-user-ninja mr-2"></i>{m.role}</p>
-                  <p
-                    className="text-[#a9adc1] text-sm mb-4"
-                    style={{ fontFamily: 'Inter, Roboto, "Helvetica Neue", Arial, sans-serif' }}
-                  >
-                    "{m.line}"
-                  </p>
-                  <a href={`mailto:${m.email}`} className="text-sm text-[#00ffc3] flex items-center justify-center border border-[#00ffc3] rounded-lg px-4 py-2 hover:bg-[#00ffc3]/10">
-                    <i className="fas fa-paper-plane mr-2"></i>{m.email}
-                  </a>
-                </div>
-              </div>
-            ))}
+  <h2 className="text-3xl font-bold text-[#00ffc3] text-center mb-12">Meet the Wizards behind the magic</h2>
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+    {team.map((member, index) => (
+      <div key={index} className="group relative">
+        <div
+          className="bg-[#1a1b26] p-4 rounded-lg cursor-pointer hover:bg-[#252632] transition-all border border-transparent hover:border-[#00ffc3] transform hover:-translate-y-2"
+          onClick={() => setSelectedMember(member)}
+        >
+          <div className="w-16 h-16 bg-[#0f0f1a] rounded-full flex items-center justify-center border-2 border-[#00ffc3] group-hover:scale-110 overflow-hidden">
+            <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
           </div>
-        </section>
+          <span className="text-[#00ffc3] font-bold truncate w-full block mt-2">{member.name}</span>
+          <span className="text-[#a9adc1] text-sm">{member.role}</span>
+        </div>
+
+        {/* Desktop View - Hover Popup */}
+        <div className="hidden md:block absolute z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none group-hover:pointer-events-auto bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 bg-gradient-to-br from-[#1a1b26] to-[#252632] p-6 rounded-lg shadow-[0_0_30px_rgba(0,255,195,0.3)] border-2 border-[#00ffc3] backdrop-blur-sm">
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#1a1b26] border-r-2 border-b-2 border-[#00ffc3] transform rotate-45"></div>
+          <div className="text-center transform scale-100 group-hover:scale-105 transition-transform duration-300">
+            <div className="w-24 h-24 mx-auto bg-[#0f0f1a] rounded-full flex items-center justify-center border-2 border-[#00ffc3] mb-4 shadow-[0_0_15px_rgba(0,255,195,0.5)] overflow-hidden">
+              <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
+            </div>
+            <h4 className="text-[#00ffc3] text-xl font-bold mb-2">{member.name}</h4>
+            <div className="text-[#a9adc1] text-sm mb-3 flex items-center justify-center">
+              <i className="fas fa-user-ninja mr-2"></i>
+              {member.role}
+            </div>
+            <p className="text-[#00ffc3] text-sm italic mb-4 px-4 py-2 bg-[#0f0f1a] rounded-lg border border-[#00ffc3] shadow-inner">
+              "{member.line}"
+            </p>
+            <a
+              href={`mailto:${member.email}`}
+              className="text-sm text-[#00ffc3] hover:text-[#00d4a3] flex items-center justify-center group relative overflow-hidden rounded-lg px-4 py-2 border border-[#00ffc3] hover:border-[#00d4a3] transition-all duration-300 bg-[#0f0f1a]"
+            >
+              <i className="fas fa-paper-plane mr-2 group-hover:translate-x-1 transition-transform duration-300"></i>
+              {member.email}
+            </a>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+{selectedMember && (
+  <div
+    className="md:hidden fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn"
+    onClick={closeMemberPopup}
+  >
+    <div
+      className="relative bg-gradient-to-br from-[#1a1b26] to-[#252632] p-6 rounded-lg m-4 shadow-[0_0_30px_rgba(0,255,195,0.3)] border-2 border-[#00ffc3] animate-scaleIn"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        onClick={closeMemberPopup}
+        className="absolute -top-3 -right-3 w-8 h-8 bg-[#00ffc3] rounded-full flex items-center justify-center hover:bg-[#00d4a3] transition-all duration-300 transform hover:scale-110 hover:rotate-90"
+      >
+        <i className="fas fa-times text-[#0f0f1a]"></i>
+      </button>
+
+      <div className="text-center">
+        <div className="w-24 h-24 mx-auto bg-[#0f0f1a] rounded-full flex items-center justify-center border-2 border-[#00ffc3] mb-4 shadow-[0_0_15px_rgba(0,255,195,0.5)] overflow-hidden">
+          <img src={selectedMember.img} alt={selectedMember.name} className="w-full h-full object-cover" />
+        </div>
+        <h4 className="text-[#00ffc3] text-xl font-bold mb-2">{selectedMember.name}</h4>
+        <div className="text-[#a9adc1] text-sm mb-3 flex items-center justify-center">
+          <i className="fas fa-user-ninja mr-2"></i>
+          {selectedMember.role}
+        </div>
+        <p className="text-[#00ffc3] text-sm italic mb-4 px-4 py-2 bg-[#0f0f1a] rounded-lg border border-[#00ffc3] shadow-inner">
+          "{selectedMember.line}"
+        </p>
+        <a
+          href={`mailto:${selectedMember.email}`}
+          className="text-sm text-[#00ffc3] hover:text-[#00d4a3] flex items-center justify-center group relative overflow-hidden rounded-lg px-4 py-2 border border-[#00ffc3] hover:border-[#00d4a3] transition-all duration-300 bg-[#0f0f1a]"
+        >
+          <i className="fas fa-paper-plane mr-2 group-hover:translate-x-1 transition-transform duration-300"></i>
+          {selectedMember.email}
+        </a>
+      </div>
+    </div>
+  </div>
+)}
 
         {/* FOOTER */}
         <footer className="border-t-2 border-[#00ffc3] pt-12 text-center">
