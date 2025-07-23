@@ -675,55 +675,55 @@ function MainComponent() {
           </div>
         )}
 
-        {selectedMember && (
-          <div
-            className="md:hidden fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn"
-            onClick={closeMemberPopup}
-          >
-            <div
-              className="relative bg-gradient-to-br from-[#1a1b26] to-[#252632] p-6 rounded-lg m-4 shadow-[0_0_30px_rgba(0,255,195,0.3)] border-2 border-[#00ffc3] animate-scaleIn"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={closeMemberPopup}
-                className="absolute -top-3 -right-3 w-8 h-8 bg-[#00ffc3] rounded-full flex items-center justify-center hover:bg-[#00d4a3] transition-all duration-300 transform hover:scale-110 hover:rotate-90"
-              >
-                <i className="fas fa-times text-[#0f0f1a]"></i>
-              </button>
+{selectedMember && (
+  <div
+    className="md:hidden fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn"
+    onClick={closeMemberPopup}
+  >
+    <div
+      className="relative bg-gradient-to-br from-[#1a1b26] to-[#252632] p-6 rounded-lg m-4 shadow-[0_0_30px_rgba(0,255,195,0.3)] border-2 border-[#00ffc3] animate-scaleIn"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        onClick={closeMemberPopup}
+        className="absolute -top-3 -right-3 w-8 h-8 bg-[#00ffc3] rounded-full flex items-center justify-center hover:bg-[#00d4a3] transition-all duration-300 transform hover:scale-110 hover:rotate-90"
+      >
+        <i className="fas fa-times text-[#0f0f1a]"></i>
+      </button>
 
-              <div className="text-center">
-                <div className="w-24 h-24 mx-auto bg-[#0f0f1a] rounded-full flex items-center justify-center border-2 border-[#00ffc3] mb-4 shadow-[0_0_15px_rgba(0,255,195,0.5)] overflow-hidden">
-                  {selectedMember.image ? (
-                    <img
-                      src={selectedMember.image}
-                      alt={selectedMember.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <i className={`fas fa-user text-[#00ffc3] text-4xl`}></i>
-                  )}
-                </div>
-                <h4 className="text-[#00ffc3] text-xl font-bold mb-2">
-                  {selectedMember.name}
-                </h4>
-                <div className="text-[#a9adc1] text-sm mb-3 flex items-center justify-center">
-                  <i className="fas fa-user-ninja mr-2"></i>
-                  {selectedMember.role}
-                </div>
-                <p className="text-[#00ffc3] text-sm italic mb-4 px-4 py-2 bg-[#0f0f1a] rounded-lg border border-[#00ffc3] shadow-inner">
-                  "{selectedMember.funnyLine}"
-                </p>
-                <a
-                  href={`mailto:${selectedMember.email}`}
-                  className="text-sm text-[#00ffc3] hover:text-[#00d4a3] flex items-center justify-center group relative overflow-hidden rounded-lg px-4 py-2 border border-[#00ffc3] hover:border-[#00d4a3] transition-all duration-300 bg-[#0f0f1a]"
-                >
-                  <i className="fas fa-paper-plane mr-2 group-hover:translate-x-1 transition-transform duration-300"></i>
-                  {selectedMember.email}
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
+      <div className="text-center">
+        <div className="w-24 h-24 mx-auto bg-[#0f0f1a] rounded-full flex items-center justify-center border-2 border-[#00ffc3] mb-4 shadow-[0_0_15px_rgba(0,255,195,0.5)] overflow-hidden">
+          {selectedMember.img ? ( // Changed from selectedMember.image to selectedMember.img
+            <img
+              src={selectedMember.img} // Changed from selectedMember.image to selectedMember.img
+              alt={selectedMember.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <i className={`fas fa-user text-[#00ffc3] text-4xl`}></i>
+          )}
+        </div>
+        <h4 className="text-[#00ffc3] text-xl font-bold mb-2">
+          {selectedMember.name}
+        </h4>
+        <div className="text-[#a9adc1] text-sm mb-3 flex items-center justify-center">
+          <i className="fas fa-user-ninja mr-2"></i>
+          {selectedMember.role}
+        </div>
+        <p className="text-[#00ffc3] text-sm italic mb-4 px-4 py-2 bg-[#0f0f1a] rounded-lg border border-[#00ffc3] shadow-inner">
+          "{selectedMember.funnyLine}"
+        </p>
+        <a
+          href={`mailto:${selectedMember.email}`}
+          className="text-sm text-[#00ffc3] hover:text-[#00d4a3] flex items-center justify-center group relative overflow-hidden rounded-lg px-4 py-2 border border-[#00ffc3] hover:border-[#00d4a3] transition-all duration-300 bg-[#0f0f1a]"
+        >
+          <i className="fas fa-paper-plane mr-2 group-hover:translate-x-1 transition-transform duration-300"></i>
+          {selectedMember.email}
+        </a>
+      </div>
+    </div>
+  </div>
+)}
       </main>
 
       <footer className="bg-[#0f0f1a] border-t-2 border-[#00ffc3] py-8 font-audiowide">

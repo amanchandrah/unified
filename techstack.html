@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Stack Overview</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #1a365d;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        th {
+            background-color: #2d3748;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:hover td {
+            background-color: #f7fafc;
+        }
+        
+        .tech-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background-color: #ebf8ff;
+            border-radius: 4px;
+            color: #2b6cb0;
+            font-size: 0.85em;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            border: 1px solid #bee3f8;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #4a5568;
+            font-size: 0.9em;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            th, td {
+                padding: 10px 12px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Technology Stack Overview</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Layer</th>
+                <th>Technology</th>
+                <th>Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Frontend Framework</strong></td>
+                <td>
+                    <span class="tech-badge">Next.js 14 (App Router)</span>
+                </td>
+                <td>SSR / CSR React application</td>
+            </tr>
+            <tr>
+                <td><strong>Language</strong></td>
+                <td>
+                    <span class="tech-badge">TypeScript</span>
+                </td>
+                <td>Type-safe React & API code</td>
+            </tr>
+            <tr>
+                <td><strong>Styling</strong></td>
+                <td>
+                    <span class="tech-badge">Tailwind CSS</span>
+                    <span class="tech-badge">Custom CSS</span>
+                </td>
+                <td>Utility-first + cyber-punk theme</td>
+            </tr>
+            <tr>
+                <td><strong>Icons / Fonts</strong></td>
+                <td>
+                    <span class="tech-badge">Font Awesome</span>
+                    <span class="tech-badge">Google Fonts (Audiowide)</span>
+                </td>
+                <td>Icons & futuristic typography</td>
+            </tr>
+            <tr>
+                <td><strong>State Management</strong></td>
+                <td>
+                    <span class="tech-badge">useState</span>
+                    <span class="tech-badge">useEffect</span>
+                    <span class="tech-badge">useRef</span>
+                </td>
+                <td>Local component state</td>
+            </tr>
+            <tr>
+                <td><strong>Authentication</strong></td>
+                <td>
+                    <span class="tech-badge">Firebase Authentication</span>
+                    <span class="tech-badge">Email/Password</span>
+                </td>
+                <td>User login & logout</td>
+            </tr>
+            <tr>
+                <td><strong>Realtime Database</strong></td>
+                <td>
+                    <span class="tech-badge">Cloud Firestore</span>
+                </td>
+                <td>CRUD for updates & history</td>
+            </tr>
+            <tr>
+                <td><strong>Admin SDK</strong></td>
+                <td>
+                    <span class="tech-badge">firebase-admin (Node)</span>
+                </td>
+                <td>Secure server-side token verification</td>
+            </tr>
+            <tr>
+                <td><strong>API Endpoint</strong></td>
+                <td>
+                    <span class="tech-badge">Next.js API Route (/api/isAdmin)</span>
+                </td>
+                <td>Gate admin-only features</td>
+            </tr>
+            <tr>
+                <td><strong>Deployment</strong></td>
+                <td>
+                    <span class="tech-badge">Vercel</span>
+                </td>
+                <td>Live hosting + CI/CD</td>
+            </tr>
+            <tr>
+                <td><strong>Dev Tools</strong></td>
+                <td>
+                    <span class="tech-badge">ESLint</span>
+                </td>
+                <td>Linting (a11y rules disabled)</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="footer">
+        Last updated: <span id="current-date"></span>
+    </div>
+
+    <script>
+        // Set current date
+        const now = new Date();
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+    </script>
+</body>
+</html>
