@@ -95,7 +95,7 @@ export default function MainComponent() {
       email: "yuvraj@iitmparadox.org",
       img: "/images/Yuvraj.jpg",
       line: "Acts innocent but is mentally married. Probably writing poetry in his head while everyone else is working."
-    }
+    } 
   ];
 
   return (
