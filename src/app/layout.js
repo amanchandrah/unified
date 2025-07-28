@@ -14,6 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="icon" type="image/png" href="/images/logoo.png" />
+        <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>{children}</body>
     </html>

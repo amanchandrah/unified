@@ -1,4 +1,11 @@
 "use client";
+import { Audiowide } from 'next/font/google';
+
+const audiowide = Audiowide({
+  subsets: ['latin'],
+  weight: '400',
+});
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 

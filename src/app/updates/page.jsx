@@ -230,9 +230,9 @@ export default function UpdatesPage() {
   /* ---------- DRAGON LOGIN (patch) ---------- */
   const openDragonLogin = () => {
 
-    let loginMinimized = false;   // true = compact bar
-    let loginVisible = true;    // false = closed
-    /* ---------- lockout check (unchanged) ---------- */
+    let loginMinimized = false;   
+    let loginVisible = true;    
+  
     const savedLockout = localStorage.getItem('lockoutTime');
     if (savedLockout && Date.now() < parseInt(savedLockout)) {
       const rem = Math.ceil((parseInt(savedLockout) - Date.now()) / 1000);
@@ -244,145 +244,125 @@ export default function UpdatesPage() {
       alert(`System locked. Wait ${rem}s`);
       return;
     }
-
-    /* ---------- dragon intro overlay (original) ---------- */
-    /* ---------- build overlay ---------- */
+  
     const portal = document.createElement("div");
     portal.id = "dragonPortalRoot";
     portal.className = "fixed inset-0 z-[9999] bg-black flex items-center justify-center";
     portal.innerHTML = /*html*/`
-  <div id="morphStage"
-       class="relative w-[95vw] max-w-4xl aspect-[16/9] flex items-center justify-center
-              sm:w-[90vw] sm:max-w-2xl md:max-w-3xl">
-
-    <!-- dragon icon -->
-    <i id="dragonCore"
-       class="fas fa-dragon text-6xl sm:text-7xl md:text-8xl text-red-500 absolute">
-    </i>
-
-    <!-- rings that scale down on small screens -->
-    ${[...Array(3)].map((_, i) => `
-        <div class="magic-ring absolute rounded-full border-2 border-red-500/50"
-             style="--delay:${i * 0.4}s; --size:${240 + i * 100}px;
-                    width:var(--size); height:var(--size);
-                    animation:spin 3s var(--delay) linear infinite;">
-        </div>`).join('')}
-  </div>
-`;
-
-    /* ========  ADD ONLY THESE TWO LINES  ======== */
+    <div id="morphStage"
+         class="relative w-[90vw] max-w-[320px] sm:w-[80vw] sm:max-w-[280px] md:max-w-3xl aspect-[16/9] flex items-center justify-center">
+      <i id="dragonCore"
+         class="fas fa-dragon text-6xl sm:text-7xl md:text-8xl text-red-500 absolute">
+      </i>
+      ${[...Array(3)].map((_, i) => `
+          <div class="magic-ring absolute rounded-full border-2 border-red-500/50"
+               style="--delay:${i * 0.4}s; --size:${240 + i * 100}px;
+                      width:var(--size); height:var(--size);
+                      animation:spin 3s var(--delay) linear infinite;">
+          </div>`).join('')}
+    </div>
+    `;
+  
     const fontLink = document.createElement('link');
     fontLink.rel = 'stylesheet';
     fontLink.href = 'https://fonts.googleapis.com/css2?family=Creepster&display=swap';
     document.head.appendChild(fontLink);
-    /* ============================================= */
-
+  
     const style = document.createElement("style");
     style.textContent = `
       @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-
+  
       @keyframes bg-grid-red {
         0% { background-position: 0 0; }
         100% { background-position: 50px 50px; }
       }
-      
-      
-      /* ---------- mobile mini styles ---------- */
+  
       @media (max-width: 640px) {
         .cyber-grid,.cyber-scan,.cyber-particles,.cyber-input-border{display:none!important}
-        .fa-dragon{font-size:3rem!important}
-        .cyber-text,.cyber-subtext{font-size:1.25rem!important}
-        #dragonEmail,#dragonPassword,.cyber-button{font-size:1rem!important;padding-top:.5rem!important;padding-bottom:.5rem!important}
+        .fa-dragon{font-size:4rem!important}
+        .cyber-text,.cyber-subtext{font-size:1.5rem!important}
+        #dragonEmail,#dragonPassword,.cyber-button{font-size:1.25rem!important;padding-top:.75rem!important;padding-bottom:.75rem!important}
+      }
+  
+      @media (max-width: 480px) {
+        #dragonEmail, #dragonPassword {
+          font-size: 1.125rem;
+          padding: 1rem;
+        }
+        .cyber-text, .cyber-subtext {
+          font-size: 1.25rem;
+        }
+        .fa-dragon {
+          font-size: 5rem;
+        }
+        button[type="submit"] {
+          padding: 1rem 2rem;
+          font-size: 1.25rem;
+        }
       }
     `;
     document.head.appendChild(style);
     document.body.appendChild(portal);
-
-
-
-
-
-    /* ---------- after dragon intro, show cyber login ---------- */
+  
     setTimeout(() => {
       const morph = portal.querySelector("#morphStage");
       morph.style.transition = "transform .7s ease-in-out";
       morph.style.transform = "scale(0)";
       setTimeout(() => {
         morph.innerHTML = `
-        <div class="bg-[#1a0000] p-2 rounded-lg border-2 border-red-600
-           w-[92vw] max-w-[280px] mx-auto
-           max-h-[60vh] overflow-y-auto
-           sm:p-4 sm:max-w-sm sm:max-h-[75vh]
-           md:p-12 md:max-w-4xl md:max-h-none md:border-4
-           relative shadow-[0_0_50px_#ff0000]">
-
-
-
-  
-            <!-- close -->
+          <div class="bg-[#1a0000] p-4 rounded-lg border-2 border-red-600 w-[90vw] max-w-[320px] mx-auto max-h-[60vh] sm:p-4 sm:max-w-sm sm:max-h-[75vh] md:p-12 md:max-w-4xl md:max-h-none md:border-4 relative shadow-[0_0_50px_#ff0000]">
+    
             <button id="portalBackBtn" class="absolute top-6 right-6 text-red-600 hover:text-red-400 cursor-pointer z-20 text-2xl transform hover:rotate-90 transition-transform duration-300">
               <i class="fas fa-times"></i>
             </button>
-  
-            <!-- content -->
+    
             <div class="relative z-10 text-center">
               <div class="mb-12">
                 <i class="fas fa-dragon text-red-600 text-8xl mb-8 block cyber-glow"></i>
                 <h3 class="text-red-600 text-5xl font-bold font-['Audiowide'] cyber-text mb-4">
-  DARK REALM ACCESS
-</h3>
+                  DARK REALM ACCESS
+                </h3>
                 <p class="text-red-400 text-xl font-audiowide mb-8 cyber-subtext">
                   Welcome To Forbidden Gateway
                 </p>
               </div>
-  
+    
               <form id="dragonLoginForm" class="max-w-lg mx-auto space-y-8">
                 <div class="relative">
                   <div class="cyber-input-border"></div>
                   <input type="email" id="dragonEmail" placeholder="ENTER DEATH ID..." required
                          class="w-full bg-[#0f0000] text-red-600 border-2 border-red-600 rounded-lg py-4 px-6 focus:outline-none focus:ring-4 focus:ring-red-600 placeholder-red-900 text-2xl font-['Audiowide'] tracking-wider"/>
                 </div>
-
+  
                 <div class="relative">
                   <div class="cyber-input-border"></div>
                   <input type="password" id="dragonPassword" placeholder="SPEAK THE FORBIDDEN WORDS..." required
                          class="w-full bg-[#0f0000] text-red-600 border-2 border-red-600 rounded-lg py-4 px-6 focus:outline-none focus:ring-4 focus:ring-red-600 placeholder-red-900 text-2xl font-['Audiowide'] tracking-wider"/>
                 </div>
-
+  
                 <button type="submit"
-                class="w-full relative
-                       bg-[#1a0000] border-2 border-red-600
-                       rounded-none
-                       font-['Audiowide'] font-bold uppercase
-                       text-xl sm:text-2xl text-red-400 tracking-widest
-                       py-4 px-6
-                       transition-all duration-200
-                       hover:bg-red-900/30 hover:border-red-400 hover:text-red-200
-                       active:scale-[0.98] active:bg-red-800/40">
-          <span class="flex items-center justify-center">
-            <i class="fas fa-skull-crossbones mr-2"></i>
-            ENTER THE MORTAL GATE
-          </span>
-        </button>
+                  class="w-full relative bg-[#1a0000] border-2 border-red-600 rounded-none font-['Audiowide'] font-bold uppercase text-xl sm:text-2xl text-red-400 tracking-widest py-4 px-6 transition-all duration-200 hover:bg-red-900/30 hover:border-red-400 hover:text-red-200 active:scale-[0.98] active:bg-red-800/40">
+                  <span class="flex items-center justify-center">
+                    <i class="fas fa-skull-crossbones mr-2"></i>
+                    ENTER THE MORTAL GATE
+                  </span>
+                </button>
               </form>
             </div>
           </div>
         `;
         morph.style.transform = "scale(1)";
-
-
-
-        /* events */
+    
         portal.querySelector("#portalBackBtn").onclick = () => {
           portal.remove();
           style.remove();
         };
-
+    
         portal.querySelector("#dragonLoginForm").addEventListener("submit", async (e) => {
           e.preventDefault();
           const email = document.getElementById("dragonEmail").value.trim();
           const pass = document.getElementById("dragonPassword").value.trim();
-
+    
           try {
             await signInWithEmailAndPassword(auth, email, pass);
             portal.remove();
@@ -393,7 +373,7 @@ export default function UpdatesPage() {
           } catch {
             const newAttempts = loginAttemptsRef.current + 1;
             loginAttemptsRef.current = newAttempts;
-
+    
             if (newAttempts >= 3) {
               const lockoutEndTime = Date.now() + 30000;
               setLockoutTime(lockoutEndTime);
@@ -405,6 +385,8 @@ export default function UpdatesPage() {
       }, 700);
     }, 1200);
   };
+  
+  
 
   /* ---------- CRUD ---------- */
   const buildPayload = () => {

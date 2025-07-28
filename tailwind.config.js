@@ -6,11 +6,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'audiowide': ['Orbitron', 'sans-serif'],
-        'creepster': ['Creepster', 'cursive'],
+        audiowide: ['"Audiowide"', 'cursive'],
+        creepster: ['Creepster', 'cursive'],
+        orbitron: ['Orbitron', 'sans-serif'], // optional if used elsewhere
       },
     },
   },
   plugins: []
 }
-
