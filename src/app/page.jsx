@@ -1033,11 +1033,19 @@ overflow-y-auto max-h-[90vh]">
           </div>
 
           <div className="mt-8 pt-8 border-t border-[#1a1b26] text-center">
-            <p className="text-[#a9adc1] text-sm">
-              © 2025 Department of Outreach and Hospitality, IIT Madras Paradox.
-              All rights reserved.
-            </p>
-          </div>
+  <p className="text-[#a9adc1] text-sm">
+    © 2025 Department of Outreach and Hospitality, IIT Madras Paradox.
+    All rights reserved.
+  </p>
+  <p className="text-[#a9adc1] text-sm font-['Audiowide'] mt-3">
+    <i className="fas fa-code text-[#00ffc3] mr-2" />
+    Developed by{" "}
+    <span className="text-[#00ffc3] hover:text-[#00d4a3] transition-colors">
+      Aman Chandra
+    </span>
+  </p>
+</div>
+
         </div>
       </footer>
 
