@@ -269,7 +269,7 @@ export default function MainComponent() {
             <a href="https://instagram.com/amanchandrah" target="_blank" rel="noreferrer" className="text-[#00ffc3] hover:text-[#00d4a3] social-icon"><i className="fab fa-instagram text-2xl"></i></a>
             <a href="https://www.linkedin.com/in/aman-chandra-h/" target="_blank" rel="noreferrer" className="text-[#00ffc3] hover:text-[#00d4a3] social-icon"><i className="fab fa-linkedin text-2xl"></i></a>
           </div>
-          <p className="text-[#a9adc1] text-sm">© 2025 Paradox, IIT Madras. All rights reserved.</p>
+          <p className="text-[#a9adc1] text-sm">© 2025 Dept of Outreach and Hospitality IITM Paradox. All rights reserved.</p>
         </footer>
       </main>
     </div>

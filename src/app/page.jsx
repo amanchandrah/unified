@@ -1034,8 +1034,7 @@ overflow-y-auto max-h-[90vh]">
 
           <div className="mt-8 pt-8 border-t border-[#1a1b26] text-center">
   <p className="text-[#a9adc1] text-sm">
-    © 2025 Department of Outreach and Hospitality, IIT Madras Paradox.
-    All rights reserved.
+  © 2025 Dept of Outreach and Hospitality IITM Paradox. All rights reserved.
   </p>
   <p className="text-[#a9adc1] text-sm font-['Audiowide'] mt-3">
     <i className="fas fa-code text-[#00ffc3] mr-2" />

@@ -1054,7 +1054,7 @@ export default function UpdatesPage() {
 
           <div className="text-center mt-12">
             <p className="text-[#a9adc1] text-sm font-['Audiowide']">
-              © 2025 Outreach and Hospitality IITM Paradox. All rights reserved.
+            © 2025 Dept of Outreach and Hospitality IITM Paradox. All rights reserved.
             </p>
           </div>
         </div>
