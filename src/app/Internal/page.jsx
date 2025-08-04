@@ -498,7 +498,7 @@ function InternalMainComponent()  {
               <div className="mt-8 pt-6 border-t border-[#1a1b26] text-center">
                 <p className="text-[#a9adc1] text-sm">
                   <i className="fas fa-info-circle mr-2 text-[#00ffc3]"></i>
-                  Your request will be processed within 24 hours
+                  Your request will be processed by the team soon
                 </p>
               </div>
             </div>
@@ -583,7 +583,7 @@ function InternalMainComponent()  {
               <div className="mt-8 pt-6 border-t border-[#1a1b26] text-center">
                 <p className="text-[#a9adc1] text-sm">
                   <i className="fas fa-info-circle mr-2 text-[#00ffc3]"></i>
-                  Your request will be processed within 24 hours
+                  Your request will be processed by the team soon
                 </p>
               </div>
             </div>
